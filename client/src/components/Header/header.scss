@@ -1,0 +1,38 @@
+.avatar{
+    background-color: #b258d0;
+    height: 40px!important;
+    width: 40px!important;
+    cursor: pointer;
+    &__popup{
+        p{
+            margin: 0!important;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        p:hover{
+            background-color: #efefef;
+        }
+    }
+}
+
+.ant-popover-inner{
+    padding: 5px 0!important
+}
+
+.ant-popover-content{
+    width: max-content;
+}
+
+.avatar svg{
+    font-size: 25px;
+}
+
+.forgot__password:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.email__reset{
+    display: flex;
+    justify-content: flex-end;
+}

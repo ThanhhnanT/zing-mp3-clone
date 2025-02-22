@@ -1,0 +1,51 @@
+.topic{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    &__image{
+        text-align: center;
+        position: relative;
+        top: 20px;
+        margin-bottom: 20px;
+    }
+    .ant-image{
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    &__title{
+        text-align: center;
+        font-weight: 600;
+        p:first-child{
+            font-size: 20px;
+            margin-bottom: 5px ;
+            color: #ed4141
+        }
+    }
+}
+
+
+.song{
+    display: flex;
+    align-items: center;
+    &__name{
+        margin-left: 10px;
+        &--title{
+            color: #c53fea;
+            font-weight: 600;
+            margin-bottom: 5px;
+            margin-top: 0px;
+        }
+        &--singer{
+            color: #7777778d;
+            font-weight: 500;
+        }
+    }
+}
+
+.ant-table-cell{
+    color: #000!important
+}
+
+.ant-table-row {
+    cursor: pointer;
+}

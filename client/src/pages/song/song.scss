@@ -1,0 +1,30 @@
+.song__running{
+    position:fixed;
+    bottom: 5px;
+    width: 86%;
+}
+
+.aplayer-body{
+    height: 80px
+}
+
+.aplayer-pic{
+    height: 80px!important;
+    width: 80px!important;
+    margin-right: 15px;
+}
+
+.infor{
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 20px;
+    color: #6f16bc;
+    &__singer{
+        margin-right: 15px;
+    }
+
+    &__like{
+        margin-right: 18px;
+        cursor: pointer;
+    }
+}
