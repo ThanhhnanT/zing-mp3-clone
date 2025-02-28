@@ -5,20 +5,24 @@ import * as database from './config/database';
 import * as bodyParser from 'body-parser'
 import Router from './api/v1/router/client/client.route';
 import cors from 'cors'
+import cookieParser from "cookie-parser"
 
 const app: Express = express();
-const port: number = Number(process.env.PORT) || 3000;
+const port = process.env.PORT || 3000;
 app.use(cors({
-    origin: "http://localhost:5173",  
-    credentials: true                
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true
 }));
 // Connect database
 database.connect();
 
 // body-parser
 app.use(bodyParser.json())
+app.use(cookieParser())
 // Router
 Router(app);
 app.listen(port, ()=> {
     console.log(`On port: ${port}`)
 })
+
+export default app;

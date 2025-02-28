@@ -2,43 +2,50 @@ import logo from "../../assets/logo-dark.svg"
 import iconLogo from "../../assets/icon_zing_mp3_60.f6b51045.svg"
 import { Menu, Layout } from 'antd'
 import { SlidersOutlined, StockOutlined, AppstoreAddOutlined } from '@ant-design/icons'
-import PropTypes from "prop-types"; 
+import PropTypes from "prop-types";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../auth/authContext";
 
 const LayoutSider = (props) => {
+    const { authToken, setOpenLogin } = useAuth()
     const navigate = useNavigate()
-    const {Sider} = Layout 
+    const { Sider } = Layout
     const collapsed = props.collapsed
     const location = useLocation()
 
     const keyPath = {
-        '/libary': "1",
+        '/library': "1",
         '/topic': "2",
         '/zing-chart': "3",
     }
-    
+
     const currentKey = keyPath[location.pathname] || ""
-    const [selectedKey, setSelectedKey] = useState(currentKey) 
+    const [selectedKey, setSelectedKey] = useState(currentKey)
     const handleSider = (key, path) => {
-        setSelectedKey(key)
-        navigate(path)
+        if (authToken) {
+            setSelectedKey(key)
+            navigate(path)
+        }
+        else{
+            setOpenLogin(true)
+        }
     }
     useEffect(() => {
-       setSelectedKey(keyPath[location.pathname] || "")
-    },[location.pathname])
+        setSelectedKey(keyPath[location.pathname] || "")
+    }, [location.pathname])
     const sider = [
         {
             key: `1`,
             icon: <SlidersOutlined />,
             label: 'Thư viện',
-            onClick: () => handleSider("1", "/libary")
+            onClick: () => handleSider("1", "/library")
         },
         {
             key: `2`,
             icon: <AppstoreAddOutlined />,
             label: 'Khám phá',
-            onClick: () => handleSider("2", '/topic')
+            onClick: () => navigate('/topic')
         },
         {
             key: `3`,

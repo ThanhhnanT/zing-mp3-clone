@@ -36,3 +36,47 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.layout__header--search{
+    width: 30%;
+    height: 50%;
+    border-radius: 16px;
+    margin-left: 20px;
+    input{
+        margin-left: 5px;
+    }
+}
+
+
+
+.total__search{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 5px 5px;
+    
+}
+
+.song{
+    &__infor{
+        p{
+            margin: 0;
+            margin-bottom: 1px;
+        }
+        margin-left: 7px;
+    }
+
+}
+
+.total__search:hover{
+    background-color: #b258d011;
+    cursor: pointer;
+}
+
+.popover-content {
+    width: 310px;
+}
+
+.popover-content{
+    overflow: hidden;
+}

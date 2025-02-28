@@ -12,6 +12,16 @@ const songSchema = new mongoose.Schema(
         audio: String,
         avatar: String,
         status: String,
+        listen: {
+            type: Number,
+            default: 0
+        },
+        listenHistory: [
+            {
+                timestamp: { type: String, required: true }, 
+                count: { type: Number, default: 0 }
+            }
+        ],
         slug: {
             type: String,
             unique: true

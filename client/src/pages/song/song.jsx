@@ -3,7 +3,7 @@ import { AudioOutlined, HeartOutlined, PlayCircleOutlined } from '@ant-design/ic
 import { useParams } from 'react-router-dom';
 import APlayer from 'aplayer';
 import 'aplayer/dist/APlayer.min.css';
-import { getSong } from '../../service/song';
+import { addListen, getSong } from '../../service/song';
 import './song.scss';
 import DOMPurify from 'dompurify';
 
@@ -24,6 +24,7 @@ function SongDetail() {
 
         fetchSong();
     }, [slugSong]);
+    console.log(data)
 
     useEffect(() => {
         if (!data) return;
@@ -42,6 +43,17 @@ function SongDetail() {
                 }
             ]
         });
+
+        ap.on("ended", async () => {
+            try{
+                console.log(data.song._id)
+                await addListen({
+                    id: data.song._id
+                })
+            } catch(e){
+                return e.message
+            }
+        })
 
         return () => {
             ap.destroy();
@@ -69,7 +81,9 @@ function SongDetail() {
                 </div>
                 <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data.song.lyrics) }} />
             </div>
-            <div className='song__running' ref={playerRef}></div>
+            <div className='song'>
+                <div className='song__running' ref={playerRef}></div>
+            </div>
         </>
     );
 }

@@ -10,7 +10,7 @@ const config = {
 }
 export const get = async (path) => {
     try {
-        const result = await axios.get(API_DOMAIN + path);
+        const result = await axios.get(API_DOMAIN + path, { withCredentials: true });
         return result;
     } catch (e){
         if(e) {
@@ -48,4 +48,14 @@ export const deleteData = async (path) => {
     } catch (e) {
         console.log(e.message)
     }
+}
+
+export const upImage = async (path, data) => {
+    try{
+        const response = await axios.post(API_DOMAIN + path, data, { headers: { 'Content-Type': 'multipart/form-data' } })
+        return response
+    } catch(e) {
+        console.log(e.message)
+    }
+
 }

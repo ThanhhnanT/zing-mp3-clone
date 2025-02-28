@@ -1,14 +1,17 @@
 import { Popover, Layout, Button, Modal, Form, Input, message, Avatar, Steps } from "antd";
-import { MenuFoldOutlined, MenuUnfoldOutlined, LoginOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined, LoginOutlined, UserAddOutlined, UserOutlined, SearchOutlined, AudioOutlined } from '@ant-design/icons';
 import { checkLogin, checkRegister, checkEmailReset, checkOTP, resetPass } from "../../service/user";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getCookie } from "../../helper/cookie"
+import { useAuth } from "../../auth/authContext";
 import './header.scss'
+import { search } from "../../service/search";
 const { Header } = Layout;
 
 const LayoutHeader = (props) => {
+    const navigate = useNavigate()
     const [countdown, setCountdown] = useState(0);
 
     useEffect(() => {
@@ -22,7 +25,7 @@ const LayoutHeader = (props) => {
         if (countdown === 0) {
             try {
                 const email = sessionStorage.getItem("email")
-                const data={
+                const data = {
                     email: email
                 }
                 const response = await checkEmailReset(data);
@@ -44,7 +47,7 @@ const LayoutHeader = (props) => {
     };
 
     const [form] = Form.useForm();
-    const [authToken, setAuthToken] = useState(null);
+    const { authToken, setAuthToken, openLogin, setOpenLogin, user } = useAuth();
     const location = useLocation();
     useEffect(() => {
         setAuthToken(getCookie("authToken"));
@@ -52,7 +55,7 @@ const LayoutHeader = (props) => {
     const popover = (
         <>
             <div className="avatar__popup">
-                <p>Cập nhật thông tin</p>
+                <p onClick={() => navigate("/user-detail")}>Cập nhật thông tin</p>
                 <p>Cài đặt</p>
                 <Link to="/logout">
                     <p>Đăng xuất</p>
@@ -61,7 +64,6 @@ const LayoutHeader = (props) => {
         </>
     )
     const { collapsed, setCollapsed } = props;
-    const [openLogin, setOpenLogin] = useState(false);
     const [confirmLoading, setConfirm] = useState(false);
     const [messageApi, contextHolder] = message.useMessage();
     const [openForgotPass, setOpenForgotPass] = useState(false)
@@ -320,7 +322,67 @@ const LayoutHeader = (props) => {
             setConfirm(false);
         }
     };
+    const [searchValue, setSearchValue] = useState("");
+    const [dataSearch, setDataSearch] = useState([]);
+    const [open, setOpen] = useState(false);
 
+    useEffect(() => {
+        if (searchValue.trim() === "") {
+            setDataSearch([]);
+            return;
+        }
+
+        const fetchData = async () => {
+            const response = await search({ keyword: searchValue });
+            if (response && response.status === 200) {
+                setDataSearch(response.data.data);
+                setOpen(true);
+            }
+        };
+
+        fetchData();
+    }, [searchValue, search]);
+
+    const handleChangeSearch = (e) => {
+        setSearchValue(e.target.value);
+    };
+
+    const handleSelectSong = (slug) => {
+        navigate(`/songs/${slug}`);
+        setSearchValue("");
+        setDataSearch([]);
+        setOpen(false);
+    };
+
+    const handleSearch = () => {
+        navigate(`/search?keyword=${searchValue}`);
+        setSearchValue("");
+        setOpen(false);
+    };
+
+    const contentSearch = (
+        <>
+            {
+                dataSearch?.map((item) => (
+                    <div
+                        onClick={() => handleSelectSong(item.slug)}
+                        key={item.id}
+                        className="total__search"
+                        style={{ display: "flex", alignItems: "center", padding: "8px", cursor: "pointer" }}
+                    >
+                        <Avatar src={item.avatar} size={50} alt={item.title} shape="square" />
+                        <div style={{ marginLeft: "10px" }}>
+                            <p style={{ margin: 0 }}>{item.title}</p>
+                            <span>
+                                <AudioOutlined /> {item?.listSinger.map(singer => (
+                                    <span key={singer.id}>{singer.fullName}</span>
+                                ))}
+                            </span>
+                        </div>
+                    </div>
+                ))}
+        </>
+    );
     return (
         <>
             {contextHolder}
@@ -328,11 +390,27 @@ const LayoutHeader = (props) => {
             <Header className="layout__header">
                 <div className="layout__header--left">
                     <Button
-                        className='button-collapsed'
+                        className="button-collapsed"
                         type="text"
                         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                         onClick={() => setCollapsed(!collapsed)}
                     />
+                    <Popover
+                        trigger="click"
+                        content={<><div className="popover-content">{contentSearch}</div></>}
+                        arrow={false}
+                        open={open} // Kiểm soát Popover bằng state
+                        onOpenChange={setOpen} // Cập nhật trạng thái Popover khi mở/tắt
+                    >
+                        <Input
+                            prefix={<SearchOutlined />}
+                            className="layout__header--search"
+                            placeholder="Tìm kiếm"
+                            value={searchValue}
+                            onChange={handleChangeSearch}
+                            onPressEnter={handleSearch}
+                        />
+                    </Popover>
                 </div>
                 <div className="layout__header--right">
                     {authToken ?
@@ -340,7 +418,11 @@ const LayoutHeader = (props) => {
                             <>
                                 <Popover arrow={false}
                                     placement="bottomRight" content={popover} trigger="click">
-                                    <Avatar className="avatar" size={60} icon={<UserOutlined />} />
+                                    {user?.avatar ? (
+                                        <Avatar className="avatar" size={60} src={user.avatar} alt="Avatar" />
+                                    ) : (
+                                        <Avatar className="avatar" size={60} icon={<UserOutlined />} />
+                                    )}
                                 </Popover>
                             </>
                         ) :

@@ -1,0 +1,54 @@
+.top--song{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &:hover{
+        background-color: #9a399e12;
+    }
+    padding: 10px 10px;
+    border-radius: 13px;
+    &__index{
+        margin-right: 10px;
+        font-size: 30px;
+        margin-left: 5px;
+        &0{
+            color: #041d9c;
+        }
+        &1{
+            color: #3ed3ce
+        }
+        &2{
+            color: #822402
+        }
+    }
+    &__infor{
+        margin-left: 5px;
+        p{
+            margin: 0;
+            margin-bottom: 3px;
+        }
+    }
+    &__percentage{
+        margin-left: auto;
+        margin-right: 20px;
+    }
+
+}
+
+.list__song{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+    align-self: center;
+}
+
+.button{
+    text-align: center;
+}
+.button__more{
+    margin-left: auto;
+    margin-top: 20px;
+    border-radius:15px ;
+    padding: 18px 15px;
+}
