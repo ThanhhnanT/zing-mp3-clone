@@ -6,6 +6,7 @@ import * as bodyParser from 'body-parser'
 import Router from './api/v1/router/client/client.route';
 import cors from 'cors'
 import cookieParser from "cookie-parser"
+import AdminRouter from './api/v1/router/admin/admin.route';
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -20,6 +21,7 @@ database.connect();
 app.use(bodyParser.json())
 app.use(cookieParser())
 // Router
+AdminRouter(app)
 Router(app);
 app.listen(port, ()=> {
     console.log(`On port: ${port}`)

@@ -12,3 +12,9 @@ body {
     background-color: #ffffff;
   }
 }
+
+.container{
+  margin: auto;
+  max-width: 1200px;
+  padding: 20px;
+}

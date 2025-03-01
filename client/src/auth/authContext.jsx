@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         setAuthToken(getCookie("authToken"));
         setAdminToken(getCookie("adminToken"))
+        console.log("adminToken từ cookie:", getCookie("adminToken"));
     }, []);
 
     useEffect(() => {
@@ -23,7 +24,7 @@ export const AuthProvider = ({ children }) => {
     }, [authToken])
 
     return (
-        <AuthContext.Provider value={{ authToken, setAuthToken, openLogin, setOpenLogin, user, adminToken }}>
+        <AuthContext.Provider value={{ setAdminToken,authToken, setAuthToken, openLogin, setOpenLogin, user, adminToken }}>
             {children}
         </AuthContext.Provider>
     );

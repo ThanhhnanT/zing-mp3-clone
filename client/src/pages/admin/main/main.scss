@@ -1,0 +1,16 @@
+.header{
+    display: flex;
+    align-items: center;
+    &__logo {
+        display: flex;
+        align-items: center;
+        img{
+            height: 30px;
+            width: auto;
+        }
+        margin-right: 10%;
+    }
+    &__admin{
+        margin-left: auto;
+    }
+}

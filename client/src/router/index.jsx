@@ -12,6 +12,7 @@ import UserDetail from "../pages/userDetail/index"
 import Admin from "../pages/admin/main"
 import AdminLogin from "../pages/admin/adminLogin"
 import AdminSong from "../pages/admin/adminSong"
+import AddSong from "../pages/admin/adminSong/addSong"
 export const routes = [
     {
         path: "/",
@@ -60,20 +61,24 @@ export const routes = [
                     },
                 ]
             },
-            {
-                path:"admin/",
-                element: <Admin/>,
-                children: [
-                    {
-                        index: true,
-                        element: <AdminSong/>
-                    }
-                ]
-            }
         ]
     },
     {
         path: "admin/login",
         element: <AdminLogin/>
     },
+    {
+        path:"admin/",
+        element: <Admin/>,
+        children: [
+            {
+                index: true,
+                element: <AdminSong/>
+            },
+            {
+                path: "song/create",
+                element: <AddSong/>
+            }
+        ]
+    }
 ]

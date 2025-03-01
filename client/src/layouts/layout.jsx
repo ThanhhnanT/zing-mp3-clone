@@ -19,7 +19,7 @@ const LayoutDefault = () => {
     };
     const [collapsed, setCollapsed] = useState(false)
 
-
+    
     return (
         <>
             <ConfigProvider theme={themeConfig}>

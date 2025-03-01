@@ -4,6 +4,7 @@ import { Card, Row, Col, Avatar, Button } from 'antd';
 import { Line } from "@ant-design/plots";
 import './home.scss'
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loading/Loading";
 
 function Home() {
     const navigate = useNavigate()
@@ -120,8 +121,8 @@ function Home() {
         { song: 'Cắt Đôi Nỗi Sầu', singer: 'Tăng Duy Tân', time: '26:02:2025 22:00', count: 8 },
         { song: 'Cắt Đôi Nỗi Sầu', singer: 'Tăng Duy Tân', time: '26:02:2025 23:00', count: 7 }
     ];
-    console.log(mapData)
-    console.log(datas)
+    // console.log(mapData)
+    // console.log(datas)
     const config = {
         data: data,
         height: 400,
@@ -174,7 +175,7 @@ function Home() {
                         </div>
                     </Col>
                     <Col span={15}>
-                        {mapData.length > 0 ? <Line {...config} /> : <p>Loading...</p>}
+                        {mapData.length > 0 ? <Line {...config} /> : <Loading/>}
                     </Col>
                 </Row>
             </Card>
