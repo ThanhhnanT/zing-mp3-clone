@@ -64,6 +64,10 @@ function AddSong() {
                             </Select>
                         </Form.Item>
                     </Col>
+                    <Col span={12}>
+                        <Input type="file"/>
+                        <Input type="file"/>
+                    </Col>
                 </Row>
             </Form>
         </div >
