@@ -11,6 +11,7 @@ function UserDetail() {
     const getBase64 = (file) =>
         new Promise((resolve, reject) => {
             const reader = new FileReader()
+            console.log(reader)
             reader.readAsDataURL(file)
             reader.onload = () => resolve(reader.result)
             reader.onerror = (error) => reject(error)
@@ -21,6 +22,7 @@ function UserDetail() {
     const [previewOpen, setPreviewOpen] = useState(false)
     const [previewImage, setPreviewImage] = useState('')
     const [fileList, setFileList] = useState([])
+    const [loading, setLoading] = useState(false)
     const { user } = useAuth()
     useEffect(() => {
         if (user) {
@@ -55,6 +57,7 @@ const onPreview = async (file) => {
 
 const changeInfor = async (values) => {
     try {
+        setLoading(true)
         let avatarUrl = fileList[0]?.url || '' // Nếu không có ảnh mới, giữ ảnh cũ
         // Nếu có ảnh mới, gửi lên backend
         if (fileList[0]?.originFileObj) {
@@ -70,8 +73,11 @@ const changeInfor = async (values) => {
 
         messageApi.success('Cập nhật thành công!')
     } catch (error) {
+        setLoading(true)
         console.error('Lỗi cập nhật thông tin:', error)
         messageApi.error('Có lỗi xảy ra, vui lòng thử lại!')
+    } finally{
+        setLoading(false)
     }
 }
 
@@ -104,14 +110,13 @@ return (
                             <Input />
                         </Form.Item>
                     </div>
-                    <Button htmlType='submit' type='primary'>
+                    <Button loading={loading} htmlType='submit' type='primary'>
                         Cập nhật
                     </Button>
                 </Col>
                 <Col span={10} className='change__avatar'>
                     <ImgCrop rotationSlider>
                         <Upload
-                            
                             listType="picture-card"
                             fileList={fileList}
                             onPreview={onPreview}

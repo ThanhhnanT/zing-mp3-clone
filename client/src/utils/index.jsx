@@ -57,5 +57,4 @@ export const upImage = async (path, data) => {
     } catch(e) {
         console.log(e.message)
     }
-
 }

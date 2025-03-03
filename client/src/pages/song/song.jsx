@@ -34,12 +34,14 @@ function SongDetail() {
             autoplay: true,
             theme: '#6a0dad',
             listFolded: false,
+            lrcType: 1,
             audio: [
                 {
                     name: data.song.title,
                     artist: data.singer.fullName,
                     url: data.song.audio,
                     cover: data.song.avatar,
+                    lrc: `${data.song.lyrics}`
                 }
             ]
         });
@@ -79,7 +81,7 @@ function SongDetail() {
                 <div className='music__name'>
                     <h2>{data.song.title}</h2>
                 </div>
-                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data.song.lyrics) }} />
+                <div style={{whiteSpace: "pre"}} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data.song.lyrics) }} />
             </div>
             <div className='song'>
                 <div className='song__running' ref={playerRef}></div>
