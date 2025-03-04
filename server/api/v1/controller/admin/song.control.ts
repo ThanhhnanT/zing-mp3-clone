@@ -46,30 +46,35 @@ export const getSong = async (req: Request, res: Response):Promise<void> => {
     }
 }
 
-export const changeStatus = async (req: Request, res:Response):Promise<void> => {
-    try{
-        await Song.updateOne(
-            {
-                _id: req.body.id
-            },
-            {
-                status : req.body.status == "active" ? "non-active" : "active"
-            }
-        )
-        res.status(200).json(
-            {
-                message: "Change successfully"
-            }
-        )
-    } catch(e) {
-        res.status(400).json(
-            {
-                message: e.message
-            }
-        )
-    }
-}
+export const changeStatus = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.body;
 
+        if (!id) {
+            res.status(400).json({ message: "Invalid input" });
+            return;
+        }
+
+        const song = await Song.findById(id);
+        if (!song) {
+            res.status(404).json({ message: "Song not found" });
+            return;
+        }
+
+        const newStatus = song.status === "active" ? "non-active" : "active";
+
+        const updatedSong = await Song.findByIdAndUpdate(
+            id,
+            { status: newStatus },
+            { new: true }
+        );
+
+        res.status(200).json({ message: "Change successfully", song: updatedSong });
+    } catch (e) {
+        console.error("Error changing status:", e);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
 export const createSong = async (req, res: Response):Promise<void> => {
     try{
         res.status(200).json(

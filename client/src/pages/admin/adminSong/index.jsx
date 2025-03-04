@@ -7,7 +7,7 @@ import Loading from "../../../components/Loading/Loading";
 import { Link } from "react-router-dom";
 
 function AdminSong() {
-    const [messageApi, contectHolder] = message.useMessage()
+    const [messageApi, contextHolder] = message.useMessage()
     const [song, setSong] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -37,20 +37,28 @@ function AdminSong() {
     }
     const changesStatus = async (id, currentStatus) => {
         try {
-            const newStatus = currentStatus === "active" ? "inactive" : "active";
+            const newStatus = currentStatus === "active" ? "non-active" : "active";
             const object = { id, status: newStatus };
 
-            await changeStatus(object);
-            setSong(prevSongs => prevSongs.map(song =>
-                song._id === id ? { ...song, status: newStatus } : song
-            ));
+            const response = await changeStatus(object);
+            console.log("API response:", response);
 
-            messageApi.success("Cập nhật trạng thái thành công")
+            if (response?.status === 200) {  // Kiểm tra API có thành công không
+                setSong(prevSongs =>
+                    prevSongs.map(song =>
+                        song._id === id ? { ...song, status: newStatus } : song
+                    )
+                );
+                messageApi.success("Cập nhật trạng thái thành công");
+            } else {
+                throw new Error("API không trả về trạng thái thành công");
+            }
         } catch (e) {
-            console.log(e)
-            messageApi.success("Có lỗi xảy ra")
+            console.error("Lỗi cập nhật trạng thái:", e);
+            messageApi.error("Có lỗi xảy ra, vui lòng thử lại!");
         }
     };
+
     const columns = [
         {
             key: "index",
@@ -87,11 +95,11 @@ function AdminSong() {
             render: (text, record) => (
                 <>
                     <Tag
-                        color={text === "active" ? "success" : "error"}
+                        color={text?.toLowerCase() === "active" ? "success" : "error"}
                         style={{ cursor: "pointer" }}
                         onClick={() => changesStatus(record._id, text)}
                     >
-                        {text === "active" ? "Hoạt động" : "Dừng hoạt động"}
+                        {text?.toLowerCase() === "active" ? "Hoạt động" : "Dừng hoạt động"}
                     </Tag>
                 </>
             )
@@ -119,7 +127,7 @@ function AdminSong() {
 
     return (
         <>
-            {contectHolder}
+            {contextHolder}
 
             <div className="container">
                 <div className="table__name">
@@ -130,7 +138,13 @@ function AdminSong() {
                         </Button>
                     </Link>
                 </div>
-                <Table dataSource={song} columns={columns} pagination={{ pageSize: 5 }} />
+                <Table
+                    dataSource={song}
+                    columns={columns}
+                    pagination={{ pageSize: 5 }}
+                    loading={loading} // Sử dụng loading của Ant Design
+                />
+
             </div>
         </>
 
