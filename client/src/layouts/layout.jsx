@@ -6,14 +6,16 @@ import { ConfigProvider } from 'antd'
 import './layout.scss'
 import LayoutSider from "../components/Sider/sider";
 import LayoutHeader from "../components/Header/header";
+import { useAuth } from "../auth/authContext";
 
 const { Content } = Layout;
 const LayoutDefault = () => {
+    const {theme} = useAuth()
     const themeConfig = {
         token: {
-            colorPrimary: "#6a0dad",
+            colorPrimary: `${theme.colorTheme}`,
             borderRadius: 8,
-            colorText: "#6a0dad", 
+            colorText: `${theme.colorTheme}`, 
             fontSize: 16, 
         },
     };

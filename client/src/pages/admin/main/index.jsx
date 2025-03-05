@@ -2,9 +2,9 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Layout, Menu, Button, ConfigProvider } from "antd";
 import { getCookie } from "../../../helper/cookie";
-import logo from "../../../assets/logo-dark.svg";
 import Loading from "../../../components/Loading/Loading";
 import "./main.scss";
+import { useAuth } from "../../../auth/authContext";
 
 const { Header, Content } = Layout;
 
@@ -16,6 +16,8 @@ function Admin() {
         loading: true,
         adminToken: null
     });
+
+    const {theme} = useAuth()
 
     const themeConfig = {
         token: {
@@ -45,6 +47,7 @@ function Admin() {
     const items = [
         { key: "/admin", label: "Quản lý bài hát" },
         { key: "/admin/topics", label: "Quản lý chủ đề" },
+        { key: "/admin/config-page", label: "Cấu hình trang" },
     ];
 
     return (
@@ -53,7 +56,7 @@ function Admin() {
                 <Header>
                     <div className="header">
                         <div className="header__logo">
-                            <img src={logo} alt="logo" />
+                            <img src={theme?.avatar} alt="logo" />
                         </div>
                         <div className="header__menu">
                             <Menu
@@ -61,7 +64,8 @@ function Admin() {
                                 mode="horizontal"
                                 selectedKeys={[location.pathname]} // 🚀 Đảm bảo menu item được selected đúng
                                 items={items}
-                                onClick={(e) => navigate(e.key)} // Điều hướng khi click menu
+                                onClick={(e) => navigate(e.key)}
+                                style={{ width: "100%" }} // Điều hướng khi click menu
                             />
                         </div>
                         <div className="header__admin">

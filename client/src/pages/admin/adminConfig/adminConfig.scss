@@ -1,0 +1,25 @@
+.color-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Định nghĩa màu */
+.purple {
+    background-color: #6a0dad;
+}
+
+.red {
+    background-color: #FF6C37;
+}
+
+.blue {
+    background-color: #009DDC;
+}

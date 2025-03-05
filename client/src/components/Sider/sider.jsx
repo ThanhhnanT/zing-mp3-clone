@@ -1,5 +1,4 @@
-import logo from "../../assets/logo-dark.svg"
-import iconLogo from "../../assets/icon_zing_mp3_60.f6b51045.svg"
+
 import { Menu, Layout } from 'antd'
 import { SlidersOutlined, StockOutlined, AppstoreAddOutlined } from '@ant-design/icons'
 import PropTypes from "prop-types";
@@ -19,6 +18,7 @@ const LayoutSider = (props) => {
         '/topic': "2",
         '/zing-chart': "3",
     }
+    const {theme} = useAuth()
 
     const currentKey = keyPath[location.pathname] || ""
     const [selectedKey, setSelectedKey] = useState(currentKey)
@@ -59,7 +59,7 @@ const LayoutSider = (props) => {
             <Sider className="sider" trigger={null} collapsible collapsed={collapsed}>
                 <Link to="/">
                     <div className="logo">
-                        <img src={collapsed ? iconLogo : logo} alt='logo' />
+                        <img src={collapsed ? theme.icon : theme.avatar } alt='logo' />
                     </div>
                 </Link>
                 <Menu

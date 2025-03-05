@@ -13,6 +13,8 @@ import Admin from "../pages/admin/main"
 import AdminLogin from "../pages/admin/adminLogin"
 import AdminSong from "../pages/admin/adminSong"
 import AddSong from "../pages/admin/adminSong/addSong"
+import AdminConfig from "../pages/admin/adminConfig/adminConfig"
+
 export const routes = [
     {
         path: "/",
@@ -78,6 +80,10 @@ export const routes = [
             {
                 path: "song/create",
                 element: <AddSong/>
+            },
+            {
+                path:"config-page/",
+                element: <AdminConfig/>
             }
         ]
     }
